@@ -1,0 +1,57 @@
+{% include "base.html" %}
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    body{
+
+        background-color: rgb(243, 239, 239);
+    }
+
+    .mydivstyle{
+        text-align: center; 
+        background-color: honeydew;
+        
+    }
+    .mydivstyle:hover{
+        box-shadow: 0 0 20px 0 rgba(0,0,0,0.3);
+        transform: translateY(-5px);
+        border-bottom: 1px solid black;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .mylink{
+        color: black;
+    }
+
+    .mylink:hover{
+        text-decoration: none;
+
+    }
+</style>
+
+
+
+<h1 class="text-center mt-5">Admin Dashboard</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 mydivstyle">
+            <h1 style="color: red;">{{ furnitures }}</h1>
+            <a href="{% url 'view_furnitures' %}" class="mylink">
+                <h2>Furnitures</h2>
+            </a>
+        </div>
+
+        <div class="col-sm-4 mydivstyle">
+            <h1 style="color: red;">{{ vehicles }}</h1>
+            <a href="{% url 'view_vehicles' %}" class="mylink">
+                <h2>Vehicles</h2>
+            </a>
+        </div>
+        
+    </div>
+</div>
