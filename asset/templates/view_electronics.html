@@ -1,13 +1,13 @@
 
 {% include "base.html" %}
 
-<h1 class="text-center">View Vehicles</h1>
+<h1 class="text-center">View Electronics </h1>
 
 <table id="example" class="table table-hover">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Number_plate</th>
+            
+            <th>Serial No</th>
             <th>Type</th>
             <th>Date</th>
             <th>Time</th>
@@ -18,17 +18,16 @@
         </tr>
     </thead>
     <tbody>
-        {% for v in veh %}
+        {% for e in elec %}
           <tr>
-              <td>{{v.id}}</td>
-              <td>{{v.number_plate}}</td>
-              <td>{{v.type}}</td>
-              <td>{{v.date}}</td>
-              <td>{{v.time}}</td>
-              <td>{{v.initial_value}}</td>
-              <td>{{v.depreciation_rate}} % annualy</td>
-              <td>{{v.current_value}}</td>
-              <td><a href="{% url 'delete_vehicle' v.id %}" 
+              <td>EL{{e.serial_no}}</td> 
+              <td>{{e.type}}</td>
+              <td>{{e.date}}</td>
+              <td>{{e.time}}</td>
+              <td>{{e.initial_value}}</td>
+              <td>{{e.depreciation_rate}} % annualy</td>
+              <td>{{e.current_value}}</td>
+              <td><a href="{% url 'delete_furniture' f.serial_no %}" 
                 onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger">Delete</a></td>
           </tr>
         {% endfor %}

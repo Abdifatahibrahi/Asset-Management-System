@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
-from .models import Furniture, Vehicle, FurnitureType, VehicleType
+from .models import Furniture, Vehicle, FurnitureType, VehicleType, ElectronicType, Electronic
 from .forms import FurnitureForm
 
 # Create your views here.
@@ -29,6 +29,7 @@ def index(request):
     
     furniture = Furniture.objects.all()
     vehicle = Vehicle.objects.all()
+    electronics = Electronic.objects.all()
     # appointment = Appointment.objects.all()
     d=0
     p=0
@@ -42,13 +43,14 @@ def index(request):
     #     p +=1
     v = len(vehicle)
     
-    # for i in appointment:
-    #     a +=1
+    e = len(electronics)
+    
+    assets = [f, v, e]
 
     mycontext = {
         'furnitures': f,
         'vehicles': v,
-        # 'appointment': a,   
+        'electronics': e,   
     }
     return render(request, 'index.html', mycontext)
 
@@ -84,39 +86,48 @@ def view_furniture(request):
     if not request.user.is_staff:
         return redirect('login')
     fur = Furniture.objects.all()
+    
     f = {'fur': fur}
     return render(request, 'view_furniture.html', f)
 
 
-def delete_furniture(request, did):
+def delete_furniture(request, s_no):
     if not request.user.is_staff:
         return redirect('login')
-    furniture = Furniture.objects.get(id=did)
+    furniture = Furniture.objects.get(serial_no=s_no)
     furniture.delete()
     return redirect('view_furnitures')
 
+# def ChairPref(number):
+#     string_x = 'CH'+ str(number)
+#     return string_x
 
+# def CupboardPref(number):
+#     string_x = 'CB'+ str(number)
+#     return string_x
+    
+# def TablePref(number):
+#     string_x = 'TB'+ str(number)
+#     return string_x
+    
+    
 def add_furniture(request):
     error = ""
     if not request.user.is_staff:
         return redirect('login')
     furnituretypes = FurnitureType.objects.all()
     if request.method == 'POST':
-        number = request.POST['serial_no']
         type = request.POST['type']
-        date = request.POST['date']
-        time = request.POST['time']
         i_value = request.POST['i_value']
-        d_rate = request.POST['d_rate']
-        d_rate = (int(d_rate) / 100)
-        d_rate = float(d_rate)
-        c_value = float(i_value) - (float(d_rate) * float(i_value))
+        rate = 0.11
+        c_value = float(i_value) - (rate * float(i_value))
         
         f1 = FurnitureType.objects.filter(type=type).first()
-
+        
         try:
-            Furniture.objects.create(serial_no=number, type=f1, date=date, time=time, 
-                                     initial_value=i_value, depreciation_rate=float(d_rate),
+            # serial_no=number,
+            Furniture.objects.create(type=f1,
+                                        initial_value=i_value, depreciation_rate=rate,
                                      current_value=c_value)
             error = "no"
         
@@ -173,17 +184,14 @@ def add_vehicle(request):
     if request.method == 'POST':
         number = request.POST['plate']
         t_type = request.POST['type']
-        date = request.POST['date']
         i_value = request.POST['i_value']
-        d_rate = request.POST['d_rate']
-        d_rate = (int(d_rate) / 100)
-        d_rate = float(d_rate)
-        c_value = float(i_value) - (float(d_rate) * float(i_value))
+        rate = 0.01
+        c_value = int(float(i_value) - (rate * float(i_value)))
         
         t = VehicleType.objects.filter(type=t_type).first()
 
         try:
-            Vehicle.objects.create(number_plate=number, type=t, date=date, initial_value=i_value, depreciation_rate=float(d_rate),
+            Vehicle.objects.create(number_plate=number, type=t, initial_value=i_value, depreciation_rate=rate,
                                      current_value=c_value)
             error = "no"
         
@@ -191,4 +199,48 @@ def add_vehicle(request):
             error = "yes"
     d = {"error": error, 'types': vehicletypes}
     return render(request, 'add_vehicle.html', d)
+
+
+
+# Electronics
+
+def view_electronics(request):
+    if not request.user.is_staff:
+        return redirect('login')
+    elec = Electronic.objects.all()
+    f = {'elec': elec}
+    return render(request, 'view_electronics.html', f)
+
+
+def delete_Electronics(request, did):
+    if not request.user.is_staff:
+        return redirect('login')
+    elec = Electronic.objects.get(id=did)
+    elec.delete()
+    return redirect('view_vehicles')
+
+
+def add_Electronics(request):
+    error = ""
+    if not request.user.is_staff:
+        return redirect('login')
+    electronictype = ElectronicType.objects.all()
+    if request.method == 'POST':
+        number = request.POST['serial_no']
+        t_type = request.POST['type']
+        i_value = request.POST['i_value']
+        rate = 0.1
+        c_value = int(float(i_value) - (rate * float(i_value)))
+        
+        t = ElectronicType.objects.filter(type=t_type).first()
+
+        try:
+            Electronic.objects.create(serial_no=number, type=t, initial_value=i_value, depreciation_rate=rate,
+                                     current_value=c_value)
+            error = "no"
+        
+        except:
+            error = "yes"
+    d = {"error": error, 'types': electronictype}
+    return render(request, 'add_electronic.html', d)
 

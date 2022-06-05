@@ -16,6 +16,7 @@
 
 {% if error == "yes" %}
     <script>
+        
         alert("record not added! try again");
     </script>
 {% endif %}
@@ -25,6 +26,8 @@
     <h2 class="text-center">Add Vehicle</h2>
     <form method="POST">
         {% csrf_token %}
+        
+
         <label>Number_plate:</label>
         <input type="text" class="form-control" name="plate">
 
@@ -35,15 +38,8 @@
             {% endfor %} 
         </select>
 
-        <label>Date:</label>
-        <input type="date" class="form-control" name="date">
         <label>Initial Value</label>
         <input type="number" class="form-control" name="i_value">
-
-        <label>Depreciation Rate</label>
-        <input type="number" class="form-control" name="d_rate">
-
-    
 
 
         <input type="submit" value="submit" class="form-control btn btn-primary">

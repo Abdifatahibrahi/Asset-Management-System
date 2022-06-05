@@ -6,6 +6,7 @@
 <table id="example" class="table table-hover">
     <thead>
         <tr>
+            
             <th>Serial No</th>
             <th>Type</th>
             <th>Date</th>
@@ -19,14 +20,14 @@
     <tbody>
         {% for f in fur %}
           <tr>
-              <td>{{f.serial_no}}</td>
+              <td>FUR{{f.serial_no}}</td> 
               <td>{{f.type}}</td>
               <td>{{f.date}}</td>
               <td>{{f.time}}</td>
               <td>{{f.initial_value}}</td>
               <td>{{f.depreciation_rate}} % annualy</td>
               <td>{{f.current_value}}</td>
-              <td><a href="{% url 'delete_furniture' f.id %}" 
+              <td><a href="{% url 'delete_furniture' f.serial_no %}" 
                 onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger">Delete</a></td>
           </tr>
         {% endfor %}

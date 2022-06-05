@@ -10,7 +10,7 @@
 {% if error == "no" %}
     <script>
         alert("record added successfully ");
-        window.location = "{% url 'view_furnitures' %}";
+        window.location = "{% url 'view_electronics' %}";
     </script>
 {% endif %}
 
@@ -22,11 +22,11 @@
 
 
 <div class="container">
-    <h2 class="text-center">Add Furniture</h2>
+    <h2 class="text-center">Add Electronic</h2>
     <form method="POST">
         {% csrf_token %}
-        <!-- <label>Serial No:</label>
-        <input type="text" class="form-control" name="serial_no"> -->
+        <label>Serial No:</label>
+        <input type="text" class="form-control" name="serial_no">
 
         <label>Type:</label>
         <select name="type" class="form-control">
@@ -35,12 +35,12 @@
             {% endfor %}
         </select>
 
+       
+
         <label>Initial Value</label>
         <input type="number" class="form-control" name="i_value">
 
-        
 
-        
 
         <input type="submit" value="submit" class="form-control btn btn-primary">
 
