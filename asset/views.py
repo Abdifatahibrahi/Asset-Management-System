@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
-from .models import Furniture, Vehicle, FurnitureType, VehicleType, ElectronicType, Electronic
+from .models import Furniture, Vehicle, FurnitureType, VehicleType, ElectronicType, Electronic, Land, Location
 from .forms import FurnitureForm
 
 # Create your views here.
@@ -30,6 +30,7 @@ def index(request):
     furniture = Furniture.objects.all()
     vehicle = Vehicle.objects.all()
     electronics = Electronic.objects.all()
+    land = Land.objects.all()
     # appointment = Appointment.objects.all()
     d=0
     p=0
@@ -45,12 +46,15 @@ def index(request):
     
     e = len(electronics)
     
+    l = len(land)
+    
     assets = [f, v, e]
 
     mycontext = {
         'furnitures': f,
         'vehicles': v,
         'electronics': e,   
+        'land': l
     }
     return render(request, 'index.html', mycontext)
 
@@ -217,7 +221,7 @@ def delete_Electronics(request, did):
         return redirect('login')
     elec = Electronic.objects.get(id=did)
     elec.delete()
-    return redirect('view_vehicles')
+    return redirect('view_electronic')
 
 
 def add_Electronics(request):
@@ -226,21 +230,66 @@ def add_Electronics(request):
         return redirect('login')
     electronictype = ElectronicType.objects.all()
     if request.method == 'POST':
-        number = request.POST['serial_no']
         t_type = request.POST['type']
         i_value = request.POST['i_value']
         rate = 0.1
-        c_value = int(float(i_value) - (rate * float(i_value)))
+        c_value = int(float(i_value) - (rate * int(i_value)))
         
         t = ElectronicType.objects.filter(type=t_type).first()
 
         try:
-            Electronic.objects.create(serial_no=number, type=t, initial_value=i_value, depreciation_rate=rate,
+            Electronic.objects.create(type=t, initial_value=i_value, depreciation_rate=rate,
                                      current_value=c_value)
             error = "no"
         
         except:
             error = "yes"
+            print(error)
     d = {"error": error, 'types': electronictype}
     return render(request, 'add_electronic.html', d)
+
+
+
+# Land
+
+def view_land(request):
+    if not request.user.is_staff:
+        return redirect('login')
+    land = Land.objects.all()
+    f = {'land': land}
+    return render(request, 'view_land.html', f)
+
+
+def delete_land(request, did):
+    if not request.user.is_staff:
+        return redirect('login')
+    land = Land.objects.get(id=did)
+    land.delete()
+    return redirect('view_land')
+
+
+def add_Land(request):
+    error = ""
+    if not request.user.is_staff:
+        return redirect('login')
+    location = Location.objects.all()
+    if request.method == 'POST':
+        name = request.POST['name']
+        location = request.POST['location']
+        i_value = request.POST['i_value']
+        rate = 0.1
+        c_value = int(float(i_value) + (rate * int(i_value)))
+        
+        l = Location.objects.filter(location=location).first()
+
+        try:
+            Land.objects.create(name=name, location=l, initial_value=i_value, apreciation_rate=rate,
+                                     current_value=c_value)
+            error = "no"
+        
+        except:
+            error = "yes"
+            print(error)
+    d = {"error": error, 'location': location}
+    return render(request, 'add_land.html', d)
 

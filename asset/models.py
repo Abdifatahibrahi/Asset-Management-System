@@ -75,21 +75,40 @@ class ElectronicType(models.Model):
         return f"{self.type}"
     
 class Electronic(models.Model):
-    serial_number = models.CharField(max_length=20)
+    serial_number = models.AutoField(auto_created=True, primary_key=True)
     type = models.ForeignKey(ElectronicType, on_delete=models.CASCADE)
-    date = models.DateField()
-    time = models.TimeField()
-    initial_value = models.IntegerField(null=True)
+    date = models.DateField(auto_now=True)
+    time = models.TimeField(auto_now=True)
+    initial_value = models.IntegerField()
     depreciation_rate = models.DecimalField(max_digits=100, decimal_places=2, null=True)
     current_value = models.IntegerField(null=True)
     
     
     def __str__(self):
-        return f"{self.number_plate} {self.type}"
+        return f"{self.serial_number} {self.type}"
     
-    
-#     def save(self, *args, **kwargs):
-#             self.id = int('VEH' + str(self.id))
-#             return super(Vehicle, self).save(*args, **kwargs)
     
 
+    
+
+# Land\
+    
+class Location(models.Model):
+    location = models.CharField(max_length=30)
+    
+    def __str__(self):
+        return f"{self.location}"
+
+
+class Land(models.Model):
+    name = models.CharField(max_length=50)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    date = models.DateField(auto_now=True)
+    time = models.TimeField(auto_now=True)
+    initial_value = models.IntegerField()
+    apreciation_rate = models.DecimalField(max_digits=100, decimal_places=2, null=True)
+    current_value = models.IntegerField(null=True)
+    
+    
+    def __str__(self):
+        return f"{self.name} {self.location}"

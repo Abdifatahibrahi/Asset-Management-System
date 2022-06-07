@@ -1,0 +1,35 @@
+
+{% include "base.html" %}
+
+<h1 class="text-center">View Land </h1>
+
+<table id="example" class="table table-hover">
+    <thead>
+        <tr>
+            
+            <th>Name</th>
+            <th>Location</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Initial Value</th>
+            <th>Apr_Rate</th>
+            <th>Current Value</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for l in land %}
+          <tr>
+              <td>{{l.name}}</td> 
+              <td>{{l.location}}</td>
+              <td>{{l.date}}</td>
+              <td>{{l.time}}</td>
+              <td>{{l.initial_value}}</td>
+              <td>{{l.apreciation_rate}} % annualy</td>
+              <td>{{l.current_value}}</td>
+              <td><a href="{% url 'delete_furniture' l.id %}" 
+                onclick="return confirm('Are you sure you want to delete?')" class="btn btn-danger">Delete</a></td>
+          </tr>
+        {% endfor %}
+    </tbody>
+</table>

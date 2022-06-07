@@ -22,4 +22,9 @@ urlpatterns = [
     path('view_electronics/', views.view_electronics, name='view_electronics'),
     path('add_electronics/', views.add_Electronics, name='add_electronics'),
     path('delete_electronic(?P<int:did>/)', views.delete_Electronics, name='delete_electronic'),
+    
+    
+    path('view_land/', views.view_land, name='view_land'),
+    path('add_land/', views.add_Land, name='add_land'),
+    path('delete_land(?P<int:did>/)', views.delete_land, name='delete_land'),
 ]

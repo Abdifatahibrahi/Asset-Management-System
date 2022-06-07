@@ -10,7 +10,7 @@
 {% if error == "no" %}
     <script>
         alert("record added successfully ");
-        window.location = "{% url 'view_electronics' %}";
+        window.location = "{% url 'view_land' %}";
     </script>
 {% endif %}
 
@@ -22,15 +22,18 @@
 
 
 <div class="container">
-    <h2 class="text-center">Add Electronic</h2>
+    <h2 class="text-center">Add Land</h2>
     <form method="POST">
         {% csrf_token %}
         
 
-        <label>Type:</label>
-        <select name="type" class="form-control">
-            {% for t in types %}
-                <option value="{{ t.type }}">{{ t.type }}</option>
+        <label>name:</label>
+        <input type="text" class="form-control" name="name">
+
+        <label>Location:</label>
+        <select name="location" class="form-control">
+            {% for l in location %}
+                <option value="{{ l.location }}">{{ l.location }}</option>
             {% endfor %}
         </select>
 
